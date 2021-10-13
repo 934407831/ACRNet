@@ -26,9 +26,11 @@ def f1(y_pred, y_true):
 
 
 def DSC(y_pred, y_true):
-    stage, y_true = parse(y_pred, y_true)
-    tp, fp, fn, _ = separate_count(stage, y_true)
-    return divide(2 * tp, fn + 2 * tp + fp)
+    stage = y_pred
+    stage = stage.cpu().detach().numpy()[:, 1, :, :]
+    y_true = np.array(y_true.cpu())
+
+    return 2 * (stage * y_true).sum() / (y_true.sum() + stage.sum())
 
 
 def HM(y_pred, y_true):
@@ -36,6 +38,13 @@ def HM(y_pred, y_true):
     tp, fp, fn, _ = separate_count(stage, y_true)
     union = tp + fp + fn
     return divide(union - tp, union)
+
+
+def IOU(y_pred, y_true):
+    y_true = np.array(y_true.cpu())
+    stage = y_pred
+    stage = np.array(stage.detach().cpu())[:, 1, :, :]
+    return divide((y_true * stage).sum(), ((y_true == 1) | (stage > 0.5)).sum())
 
 
 def parse(y_pred, y_true):
