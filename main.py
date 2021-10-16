@@ -10,12 +10,12 @@ from tool.metrics import precision, recall, accuracy, f1, DSC, HM, IOU
 from tool.callback import save_log
 import time
 
-train_dataset, val_dataset, test_dataset, neg_rate, _ = data_deal(batch_size=2, train_ratio=0.6, val_ratio=0.3)
+train_dataset, val_dataset, test_dataset, neg_rate, _ = data_deal(batch_size=1, train_ratio=0.6, val_ratio=0.3)
 print(torch.cuda.is_available())
 model = ODAS().to(device)
 # model.load_state_dict(torch.load('model/saved_model/model.pt'))
 summary(model, (1, 512, 512))
-# print(model)
+print(model)
 
 
 def call(data):
