@@ -26,11 +26,10 @@ def call(data):
 
 
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
-# lambda1 = lambda epoch: epoch // 10
-# scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lambda1, last_epoch=-1)
+
 loss = Loss(weight=torch.tensor([1-neg_rate, neg_rate]).to(device))
-fit(model=model, train_dataset=train_dataset, val_dataset=val_dataset, epochs=1000, loss_func=loss, metrics=[accuracy, precision, recall, f1, DSC, HM, IOU], epoch_callbacks=[save_log], optimizer=optimizer)
-# eva = evaluate(model=model, dataset=test_dataset, metrics=[accuracy, precision, recall, f1, DSC, HM], loss_func=loss)
+fit(model=model, train_dataset=train_dataset, val_dataset=val_dataset, epochs=1000, metrics=[loss, accuracy, precision, recall, f1, DSC, HM, IOU], epoch_callbacks=[save_log], optimizer=optimizer, lr_decay='lambda', lr_decay_options={'lr_lambda': lambda epoch: (1-epoch / 1000) ** 0.9})
+# eva = evaluate(model=model, dataset=test_dataset, metrics=[loss, accuracy, precision, recall, f1, DSC, HM, IOU])
 # print(eva)
 # with open('log/test_result.txt', 'w') as f:
 #     time = time.asctime()
