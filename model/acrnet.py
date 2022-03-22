@@ -36,9 +36,9 @@ class AC(Module):
         return y
 
 
-class ODAS(Module):
+class ACRNet(Module):
     def __init__(self):
-        super(ODAS, self).__init__()
+        super(ACRNet, self).__init__()
         self.p0 = Conv2d(1, 16, kernel_size=(7, 7), stride=(1, 1))
         self.p1 = self.part_1()
         self.max_pool1, self.s1, self.conv1_o, self.s2, self.s3, self.max_pool2, self.conv1_1, self.s4, self.s5, self.s6 = self.part_2()
